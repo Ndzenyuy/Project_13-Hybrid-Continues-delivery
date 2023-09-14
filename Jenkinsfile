@@ -29,7 +29,7 @@ pipeline {
     stages {
         stage('Deploy to Stage Bean'){
           steps {
-            withAWS(credentials: 'awsbeancreds', region: 'us-west-1') {
+            withAWS(credentials: 'awsbeancreds', region: 'us-east-2') {
                sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT --version-label $AWS_EB_APP_VERSION'
             }
           }
