@@ -80,6 +80,7 @@ In this project, I implemented a continues delivery of a webapp, this time it is
 
 
         ```
+        ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/beanstalk%20stage%20and%20prod%20environments.png)
 
 - Pipeline setup for staging \
     Open the project folder on local machine, in the branch ```ci-jenkins``` then create a new branch from it 
@@ -229,7 +230,7 @@ In this project, I implemented a continues delivery of a webapp, this time it is
     On Jenkins dashboard, build the project
     ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/stage-build-success.png)
     Wait for a few minutes and Check the url on elastic beanstalk to the App, the app should be deployed
-    ![]()
+    ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/login-page.png)
 
 
 - Pipeline setup for prod
@@ -340,8 +341,13 @@ In this project, I implemented a continues delivery of a webapp, this time it is
     ```
 
     Build pipeline, now our script requires approval from the stage pipeline since we are trying to read it's BUILD_ID, we have to manually approve the prompts for several times by clinking the link as on the log below and approving. The builds will succed after the fourth approval.
-    ![](error message awaiting approval)
-    ![](approved)
+    ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/pipeline%20approval%20request.png)
+    ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/pipeline%20approved.png)
 
 - CICD flow
     Modify the code, by adding comments, then push it to github, from the staging branch. The pipeline should be triggered which will build the pipeline. If everything goes well, it can be promoted to production by running a ```git merge cicd-jenbean-stage``` from the production branch. This will lauch the prod pipeline which will simply deploy the exact same version as in staging, by picking the buildid from the stage pipeline.
+  ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/stage%20and%20prod%20pipeline.png)
+  ![]()
+  ![]()
+  ![]()
+  
