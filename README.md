@@ -281,6 +281,67 @@ In this project, I implemented a continues delivery of a webapp, this time it is
 
         Update the Jenkinsfile for prod to have
         ```
-        
+            def buildNumber = Jenkins.instance.getItem('cicd-jenkins-bean-stage').lastSuccessfulBuild.number
+
+            pipeline {
+                agent any
+                tools {
+                    maven "MAVEN3"
+                    jdk "OracleJDK8"
+                }
+                
+                environment {
+                    SNAP_REPO = 'vprofile-snapshot'
+                    NEXUS_USER = 'admin'
+                    NEXUS_PASS = 'admin123'
+                    RELEASE_REPO = 'vprofile-release'
+                    CENTRAL_REPO = 'vpro-maven-central'
+                    NEXUSIP = '172.31.30.107'
+                    NEXUSPORT = '8081'
+                    NEXUS_GRP_REPO = 'vpro-maven-group'
+                    NEXUS_LOGIN = 'nexuslogin'
+                    SONARSERVER = 'sonarserver'
+                    SONARSCANNER = 'sonarscanner'
+                    ARTIFACT_NAME = "vprofile-v${buildNumber}.war"
+                    AWS_S3_BUCKET = 'vprofile12cicdbean'
+                    AWS_EB_APP_NAME = 'vproapp'
+                    AWS_EB_ENVIRONMENT = 'Vproapp-prod'
+                    AWS_EB_APP_VERSION = "${buildNumber}"
+                }
+
+                stages {
+                    stage('Deploy to Stage Bean'){
+                    steps {
+                        withAWS(credentials: 'awsbeancreds', region: 'us-east-2') {
+                        sh 'aws elasticbeanstalk update-environment --application-name $AWS_EB_APP_NAME --environment-name $AWS_EB_ENVIRONMENT --version-label $AWS_EB_APP_VERSION'
+                        }
+                    }
+                    }
+                    
+                    /* stage('Slack'){
+                        steps{
+                            slackSend message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+                        }
+                    }   */  
+                }
+            }
+
         ```
+
+    Goto Jenkins dashboard, create a new item
+    ```
+        name: cicd-jenbean-prod
+        pipeline = true
+        copy from: cicd-jenbean-stage
+        -> save
+
+        modify Branches to build from */cicd-jenbean-stage to */cicd-jenbean-prod
+        -> save
+    ```
+
+    Build pipeline, now our script requires approval from the stage pipeline since we are trying to read it's BUILD_ID, we have to manually approve the prompts for several times by clinking the link as on the log below and approving. The builds will succed after the fourth approval.
+    ![](error message awaiting approval)
+    ![](approved)
+
 - CICD flow
+    Modify the code, by adding comments, then push it to github, from the staging branch. The pipeline should be triggered which will build the pipeline. If everything goes well, it can be promoted to production by running a ```git merge cicd-jenbean-stage``` from the production branch. This will lauch the prod pipeline which will simply deploy the exact same version as in staging, by picking the buildid from the stage pipeline.
