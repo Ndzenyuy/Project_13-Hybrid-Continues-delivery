@@ -2,7 +2,7 @@
 
 In this project, I implemented a continues delivery of a webapp, this time it is a hybrid deployment(integrating Jenkins with AWS Elastic beanstalk). The CI pipeline builds the artifact and stores in Nexus, this artifact is copied and stored in an S3 bucket from where Beanstalk is configured to pick the same and deploy it to a tomcat platform. Each time a new build is present, the Beanstalk environment automatically updates the running webapp. Two pipelines run here, staging and Production, both hosted as different git branches. Once the staging is good, to lanch production, a simple git merge is required and Jenkins triggers Elastic beanstalk with the coodinates of the artifact running on the staging servers which is then promoted to production.
 
-![](Architecture)
+![]()
 
 ## Prereqs
 
