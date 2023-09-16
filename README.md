@@ -227,7 +227,7 @@ In this project, I implemented a continues delivery of a webapp, this time it is
 
     ```
     On Jenkins dashboard, build the project
-    ![](jenkins-sucessful-build)
+    ![](https://github.com/Ndzenyuy/Project_13-Hybrid-Continues-delivery/blob/cicd-jenbean-stage/images/stage-build-success.png)
     Wait for a few minutes and Check the url on elastic beanstalk to the App, the app should be deployed
     ![]()
 
